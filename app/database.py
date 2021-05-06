@@ -13,11 +13,11 @@ class FakeDb():
         self.insertions = {}
 
     def add(self, row):
-        table_key = type(row)
-        if table_key not in self.tables:
+        model = type(row)
+        if model not in self.tables:
             # Tables are implemented as dicts with model's primary_key used is dict's key
             # Very basic and inefficient of course, but this is just a toy model of db
-            self.tables[table_key] = {}
+            self.tables[model] = {}
         try:
             primary_key = row.primary_key
         except AttributeError:
@@ -37,10 +37,10 @@ class FakeDb():
         # row to table dict, then by directly manipulating row object, we would be
         # manipulating database. We don't want that. Database is manipulated by
         # calling update, not by direct modification
-        self.tables[table_key][pk_value] = row.copy()
+        self.tables[model][pk_value] = row.copy()
 
-        insertions = self.insertions.get(table_key, 0)
-        self.insertions[table_key] = insertions+1
+        insertions = self.insertions.get(model, 0)
+        self.insertions[model] = insertions+1
 
     def update(self, row_update, pk_value):
         model = type(row_update)
@@ -51,6 +51,10 @@ class FakeDb():
                 setattr(old_row, attr, val)
             self.delete(model, pk_value)
             self.add(old_row)
+
+            # We actually didn't do new insertion, decrement counter then
+            insertions = self.insertions.get(model, 0)
+            self.insertions[model] = insertions-1
 
     def get(self, model, pk_value):
         table = self._get_table(model)
