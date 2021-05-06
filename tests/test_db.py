@@ -60,11 +60,11 @@ def test_update(db_connect, sample_post):
     db_connect.add(sample_post)
     assert sample_post.id == ex_id
 
-    edits_post = PostModel(content="We updated the content", author="Group")
-    db_connect.update(edits_post, ex_id)
+    post_edits = PostModel(content="We updated the content", author="Group")
+    db_connect.update(post_edits, ex_id)
     updated_post = db_connect.get(PostModel, ex_id)
     assert updated_post != sample_post
     assert updated_post.title == sample_post.title
     assert updated_post.timestamp_utc == sample_post.timestamp_utc
-    assert updated_post.content == edits_post.content
-    assert updated_post.author == edits_post.author
+    assert updated_post.content == post_edits.content
+    assert updated_post.author == post_edits.author
