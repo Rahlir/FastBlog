@@ -2,8 +2,7 @@ from copy import copy
 
 
 class FakeDb():
-    """
-    Toy model of database. Not real database just python object behaving like object
+    """Toy model of database. Not real database just python object behaving like object
     communicating with a database.
     """
     def __init__(self):
@@ -137,13 +136,10 @@ class FakeDb():
 
 
 class DbModel():
-    """
-    This is a base model that should be inheritted by all models
-    used to create database table
-    """
+    """This is a base model that should be inheritted by all models
+    used to create database table"""
     def __eq__(self, other):
-        """
-        Since model is just a row entry, two models with identical
+        """Since model is just a row entry, two models with identical
         attributes should be equal.
 
         This is especially important because we are inserting copies

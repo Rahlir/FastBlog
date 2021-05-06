@@ -16,4 +16,19 @@ class PostModel(DbModel):
 
     @classmethod
     def new(cls, author: str, title: str, content: str):
+        """Create a new blog post with the current timestamp.
+        This will only create the model object, NOT
+        save it in the database. That must be done separately
+
+        Parameters
+        ----------
+        author : the author of the blog post
+        title : the title of the blog post
+        content : content (body) of the blog post
+
+        Returns
+        -------
+        model object representing the blog post
+        """
+
         return cls(author, title, content, datetime.now(timezone.utc))

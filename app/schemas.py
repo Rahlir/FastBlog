@@ -14,8 +14,7 @@ class PostRaw(BaseModel):
 
 
 class PostEdit(PostRaw):
-    """
-    Not sure if there is more elegant solution, but this schema
+    """Not sure if there is more elegant solution, but this schema
     is necessary to ensure that by PUT edit requests don't try to modify
     id of a post
     """
@@ -25,15 +24,14 @@ class PostEdit(PostRaw):
 
 
 class PostNew(PostRaw):
-    """For new posts title, author, and content are mandatory"""
+    """For new posts, title, author, and content are mandatory"""
     title: str
     author: str
     content: str
 
 
 class Post(PostNew):
-    """
-    This is the Post schema corresponding to PostModel,
+    """This is the Post schema corresponding to PostModel,
     which is how posts are stored in the FakeDb
     """
     id: int
