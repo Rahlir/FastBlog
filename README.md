@@ -18,7 +18,11 @@ uvicorn app.main:app --reload
 
 
 ## Testing
-Tests are written using **pytest**. Just run `pytest` from the project directory to execute all the tests.
+Tests are written using **pytest**. Just run 
+```bash
+python -m pytest
+```
+from the project directory to execute all the tests.
 
 
 ## Implementation Notes
@@ -34,3 +38,5 @@ SQL database
 - Normally, I wouldn't be manipulating the blog post data directly in the `main.py` function, but
 instead there would be a separate _crud_ module. However, since the `FakeDb` in `database.py` behaves
 pretty much like a _crud_ module, I decided against creating this unnecessary module
+- In real world some of the main api functions should be `async`. However, since in this demo we were
+dealing with a fake database that doesn't even perform any IO operations, `async` is not necessary
