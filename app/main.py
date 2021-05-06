@@ -21,11 +21,13 @@ def create_post(new_post: PostNew):
 
 @app.get("/blog/posts", response_model=List[Post])
 def list_posts():
+    """List all the blog posts in the database showing each post's details"""
     return db_session.get_all(PostModel)
 
 
 @app.put("/blog/{post_id}", response_model=Post)
 def edit_post(post_id: int, post_edits: PostEdit):
+    """Edit blog post"""
     post_edits_model = PostModel(**post_edits.dict(exclude_unset=True))
     db_session.update(post_edits_model, post_id)
     return db_session.get(PostModel, post_id)
@@ -33,12 +35,13 @@ def edit_post(post_id: int, post_edits: PostEdit):
 
 @app.delete("/blog/posts/{post_id}", response_model=Post)
 def delete_post(post_id: int):
+    """Delete blog post with the specified id"""
     return db_session.delete(PostModel, post_id)
 
 
 @app.get("/blog/posts/{post_id}", response_model=Post)
 def post_details(post_id: int):
-    """Get details of a blog post"""
+    """Get details of a blog post with the specified id"""
     return db_session.get(PostModel, post_id)
 
 
