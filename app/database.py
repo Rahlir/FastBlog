@@ -86,7 +86,7 @@ class FakeDb():
         return table
 
 
-class BaseModel():
+class DbModel():
     """
     This is a base model that should be inheritted by all models
     used to create database table
@@ -102,13 +102,13 @@ class BaseModel():
         object used to insert into the database to NOT be equal to the
         object in the database.
         """
-        if (isinstance(other, BaseModel)):
+        if (isinstance(other, DbModel)):
             return self.__dict__ == other.__dict__
 
     def copy(self):
         """This funciton is not necessary of course - we could just directly call copy(model_obj)
-        when we need a copy of BaseModel. But this way we ensure that FakeDb is dealing with proper
-        Model object (ones that inherits this BaseModel)"""
+        when we need a copy of DbModel. But this way we ensure that FakeDb is dealing with proper
+        Model object (ones that inherits this DbModel)"""
         return copy(self)
 
 

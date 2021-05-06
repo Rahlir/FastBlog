@@ -1,9 +1,9 @@
 from datetime import datetime, timezone
 
-from .database import BaseModel
+from .database import DbModel
 
 
-class PostModel(BaseModel):
+class PostModel(DbModel):
     def __init__(self, author=None, title=None, content=None, timestamp_utc=None):
         # This is a property of table created by this model - attribute of PostModel
         # used as a primary (and unique) key will be 'id'
