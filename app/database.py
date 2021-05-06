@@ -13,6 +13,14 @@ class FakeDb():
         self.insertions = {}
 
     def add(self, row):
+        """Add row to the database table
+
+        Parameters
+        ----------
+        row : model object (instance of DbModel) which will be added to the
+              database table. If table of this model isn't in the database, it
+              will be created
+        """
         model = type(row)
         if model not in self.tables:
             # Tables are implemented as dicts with model's primary_key used is dict's key
@@ -43,6 +51,14 @@ class FakeDb():
         self.insertions[model] = insertions+1
 
     def update(self, row_update, pk_value):
+        """Update a row in a table if the row of specified pk_value is in the table
+
+        Parameters
+        ----------
+        row_update : model object (instance of DbModel) contaning the attributes
+                     to be updated, else is None
+        pk_value : id of the object to be updated
+        """
         model = type(row_update)
         old_row = self.get(model, pk_value)
         if old_row:
@@ -57,7 +73,20 @@ class FakeDb():
             self.insertions[model] = insertions-1
 
     def get(self, model, pk_value):
+        """Get row from the table
+
+        Parameters
+        ----------
+        model : model class specifying the database table
+        pk_value : id of the row
+
+        Returns
+        -------
+        model object containing the data of the row
+        """
         table = self._get_table(model)
+        if not table:
+            return None
 
         res = table.get(pk_value, None)
         # Again, we need to copy the result. Otherwise modifying the returned object
@@ -67,11 +96,36 @@ class FakeDb():
         return res.copy() if res is not None else res
 
     def get_all(self, model):
+        """Get all rows of a table of the specified model
+
+        Parameters
+        ----------
+        model : model class specifying the database table
+
+        Returns
+        -------
+        list of all model objects
+        """
         table = self._get_table(model)
+        if not table:
+            return []
         return [row.copy() for row in table.values()]
 
     def delete(self, model, pk_value):
+        """Delete row of a table
+
+        Parameters
+        ----------
+        model : model class specifying the database table
+        pk_value : id of the row to be deleted
+
+        Returns
+        -------
+        model object containing the data of the deleted row
+        """
         table = self._get_table(model)
+        if not table:
+            return None
 
         return table.pop(pk_value, None)
 
@@ -79,11 +133,7 @@ class FakeDb():
         return self.insertions.get(model, 0)+1
 
     def _get_table(self, model):
-        try:
-            table = self.tables[model]
-        except KeyError:
-            raise KeyError(f"No table with model {model}")
-        return table
+        return self.tables.get(model, None)
 
 
 class DbModel():
